@@ -27,6 +27,7 @@ model Scooter {
   name         String?  @db.VarChar(100)
   serialNumber String   @unique @db.VarChar(100)
   licensePlate String   @db.VarChar(100)
+  status       String   @default("available") @db.VarChar(20)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   rents        Rent[]

@@ -1,4 +1,4 @@
 export class CreateRentDto {
-  scooterId: string;
-  userId: string;
+  scooterId: number;
+  userId: number;
 }

@@ -11,4 +11,14 @@ export class ScooterService {
   ): Promise<Scooter | null> {
     return this.prisma.scooter.findUnique({ where: scooterWhereUniqueInput });
   }
+
+  // async updateScooterBy(
+  //   where: Prisma.ScooterWhereUniqueInput,
+  //   data: Prisma.ScooterUpdateInput
+  // ): Promise<Scooter> {
+  //   return this.prisma.scooter.update({
+  //     where,
+  //     data
+  //   });
+  // }
 }

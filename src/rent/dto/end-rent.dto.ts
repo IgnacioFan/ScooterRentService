@@ -1,3 +1,3 @@
 export class EndRentDto {
-  userId: string;
+  userId: number;
 }

@@ -15,6 +15,8 @@ import { UserService } from '../user/user.service';
 import { ORDER_SERVICE } from '../constant/services';
 import { ClientProxy } from '@nestjs/microservices';
 
+import { lastValueFrom } from 'rxjs';
+
 @Injectable()
 export class RentService {
   constructor(
@@ -124,7 +126,6 @@ export class RentService {
         amount: totalAmount,
         currency: 'TWD',
       });
-      console.log('Sent order_created message');
 
       return {
         rentStartAt: updatedRent.startAt,
@@ -140,7 +141,6 @@ export class RentService {
 
   async pay(id: number, payRentDto: PayRentDto) {
     const { userId } = payRentDto
-
     const rent = await this.prisma.rent.findUnique({
       where: { id, userId },
       include: { user: true, scooter: true },
@@ -154,14 +154,22 @@ export class RentService {
     }
 
     return await this.prisma.$transaction(async (prisma) => {
+      const response = await lastValueFrom(
+        this.client.send('order_paid', {
+          rentId: rent.id,
+          userId,
+        })
+      );
+
+      if (response.status !== 'success') {
+        throw new BadRequestException('Payment failed');
+      }
+
       const updatedRent = await prisma.rent.update({
-        where: { id },
-        data: {
-          status: 'completed'
-        },
+        where: { id: rent.id },
+        data: { status: 'paid' },
       });
-      // TODO: send pay_order message to WemoOrder service
-      // wait RabbitMQ returns ack and a success message, if not raise an error
+
       return {
         rentStartAt: updatedRent.startAt,
         rentEndAt: updatedRent.endAt,
@@ -169,6 +177,7 @@ export class RentService {
         userName: rent.user.name,
         scooterSerialNumber: rent.scooter.serialNumber,
         scooterLicensePlate: rent.scooter.licensePlate,
+        order: response.order,
       };
     });
   }

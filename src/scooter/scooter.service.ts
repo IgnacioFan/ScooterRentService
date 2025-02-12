@@ -12,13 +12,13 @@ export class ScooterService {
     return this.prisma.scooter.findUnique({ where: scooterWhereUniqueInput });
   }
 
-  // async updateScooterBy(
-  //   where: Prisma.ScooterWhereUniqueInput,
-  //   data: Prisma.ScooterUpdateInput
-  // ): Promise<Scooter> {
-  //   return this.prisma.scooter.update({
-  //     where,
-  //     data
-  //   });
-  // }
+  async updateScooterBy(
+    scooterId: number,
+    data: Prisma.ScooterUpdateInput,
+  ): Promise<Scooter> {
+    return this.prisma.scooter.update({
+      where: { id: scooterId },
+      data: data,
+    });
+  }
 }

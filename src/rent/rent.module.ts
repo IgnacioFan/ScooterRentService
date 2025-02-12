@@ -17,7 +17,7 @@ import { ORDER_SERVICE } from '../constant/services';
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://rabbitmq:5672'],
-          queue: 'order_queue'
+          queue: 'order_queue',
         },
       },
     ]),

@@ -4,6 +4,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { lastValueFrom } from 'rxjs';
 import { PrismaService } from '../prisma.service';
 import { Rent, Prisma } from '@prisma/client';
 import { CreateRentDto } from './dto/create-rent.dto';
@@ -14,8 +15,6 @@ import { UserService } from '../user/user.service';
 // set up RabbitMQ client
 import { ORDER_SERVICE } from '../constant/services';
 import { ClientProxy } from '@nestjs/microservices';
-
-import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class RentService {

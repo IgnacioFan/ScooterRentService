@@ -4,7 +4,7 @@ import { CreateRentDto } from './dto/create-rent.dto';
 import { EndRentDto } from './dto/end-rent.dto';
 import { PayRentDto } from './dto/pay-rent.dto';
 
-@Controller('rents')
+@Controller('v1/rents')
 export class RentController {
   constructor(private readonly rentService: RentService) {}
 

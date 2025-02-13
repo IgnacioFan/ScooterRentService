@@ -125,7 +125,7 @@ export class RentService {
     });
   }
 
-  private async isUserHasUncompletedRentals(userId: number): Promise<boolean> {
+  async isUserHasUncompletedRentals(userId: number): Promise<boolean> {
     const rent = await this.prisma.rent.findFirst({
       where: {
         userId: userId,
@@ -136,10 +136,7 @@ export class RentService {
     return rent !== null;
   }
 
-  private async createNewRent(
-    userId: number,
-    scooterId: number,
-  ): Promise<Rent> {
+  async createNewRent(userId: number, scooterId: number): Promise<Rent> {
     return this.prisma.rent.create({
       data: {
         userId,
